@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-md navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<%= link_to "Hiptime", root_path, class:"navbar-brand" %>
+			</div>
+			<ul class="nav navbar-nav">
+				<% if current_user.present? %>
+					<li class="nav-item"><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+				<% else %>
+					<li class="nav-item ml-3"><%= link_to "Log In", new_user_session_path %></li>
+					<li class="nav-item ml-3"><%= link_to "Sign Up", new_user_registration_path %></li>
+				<% end %>
+			
+			<% if user_signed_in? %>
+				<div class="col align-self-start">
+					<%= link_to "Create Item", new_item_path, class: "navbar-link" %>
+				</div>
+			<% end %>
+			</ul>
+		</div>
+	</nav>
+

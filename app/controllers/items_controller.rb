@@ -4,7 +4,9 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @items = Item.all
+      if user_signed_in?
+        @items = Item.where(user_id: current_user.id)
+      end
   end
 
   # GET /items/1
@@ -24,11 +26,11 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    @item = Item.new(item_params)
+    @item = current_user.items.new(item_params)
 
     respond_to do |format|
       if @item.save
-        format.html { redirect_to @item, notice: 'Item was successfully created.' }
+        format.html { redirect_to @item, warning: 'Item creado exitosamente.' }
         format.json { render :show, status: :created, location: @item }
       else
         format.html { render :new }
@@ -42,7 +44,7 @@ class ItemsController < ApplicationController
   def update
     respond_to do |format|
       if @item.update(item_params)
-        format.html { redirect_to @item, notice: 'Item was successfully updated.' }
+        format.html { redirect_to @item, warning: 'Item actualizado exitosamente.' }
         format.json { render :show, status: :ok, location: @item }
       else
         format.html { render :edit }
@@ -56,9 +58,15 @@ class ItemsController < ApplicationController
   def destroy
     @item.destroy
     respond_to do |format|
-      format.html { redirect_to items_url, notice: 'Item was successfully destroyed.' }
+      format.html { redirect_to items_url, warning: 'Item borrado exitosamente.' }
       format.json { head :no_content }
     end
+  end
+
+  def complete 
+    @item = Item.find(params[:id])
+    @item.update_attribute(:completed_at, Time.now)
+    redirect_to root_path
   end
 
   private

@@ -1,4 +1,4 @@
-<%= form_with(model: item, local: true) do |form| %>
+<%= simple_form_for @item do |form| %>
   <% if item.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
@@ -12,13 +12,11 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
+    <%= form.input :title, label: "Titulo" %>
   </div>
 
   <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.input :description, label: "Descripcion" %>
   </div>
 
   <div class="actions">
